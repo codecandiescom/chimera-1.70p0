@@ -1,0 +1,17 @@
+#include <../Common.tmpl>
+
+HEADERS = HTML.h HTMLP.h HTMLamp.h
+
+SRCS    = HTML.c HTMLformat.c HTMLimages.c HTMLlists.c \
+          HTMLparse.c HTMLwidgets.c HTML-PSformat.c DrawingArea.c
+
+OBJS    = HTML.o HTMLformat.o HTMLimages.o HTMLlists.o \
+          HTMLparse.o HTMLwidgets.o HTML-PSformat.o DrawingArea.o
+
+EXTRA_DEFINES  = -DISINDEX_SUBMIT $(XRELEASE) -DFAKE_EXPOSE $(CEXTRA_DEFINES)
+EXTRA_INCLUDES = -I../mxw -I../common
+
+NormalLibraryTarget(htmlw, $(OBJS))
+DependTarget()
+
+install.man::

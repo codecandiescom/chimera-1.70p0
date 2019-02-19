@@ -1,0 +1,250 @@
+                                Chimera 1.70
+                      X11/Athena World-Wide Web Client
+                    Originally developed by John Kilburg
+
+   Chimera is an X/Athena Web client for UNIX-based workstations.  If you do
+not know about the Web then try to grab a FAQ from rtfm.mit.edu using ftp.
+Chimera does not require Motif.
+
+* Installation:
+    See ./INSTALL for installation and configuration instructions.
+    See ./INSTALL.hints for tips on getting it to work in special cases.
+
+* What are all these files:
+    A description of the structure of the files in this distribution appears
+    near the end of this file.
+
+* Chimera support and announcements:
+    + For announcements of new versions and patches, join the
+        chimera-announce@cs.unlv.edu mailing list by sending a request to
+        join to chimera-announce-request@cs.unlv.edu.
+
+    + To report bugs, send email to bug-chimera@cs.unlv.edu
+
+    + If you want to receive the bug reports sent to bug-chimera, join the
+        list by sending a request to join to bug-chimera-request@cs.unlv.edu.
+        This will also keep you abreast with the Chimera-2.* development.
+
+
+
+WHAT'S NEW IN CHIMERA 1.70
+--------------------------
+
+SUMMARY:
+
+   If you're using any prior version of Chimera 1, you definitely want to
+switch to this version!
+
+Chimera 1.70 contains many new features compared to 1.65p1+1:
+    1) Table support has been vastly improved.
+    2) mailto:user@host URLs are now supported  (via an external Perl script).
+    3) Display refresh has been substantially optimized.
+    4) Image handling improvements speed up rendering, a lot in some cases.
+    5) DNS caching cuts domain name lookup calls by about 90%.
+    6) Connection progress is displayed in the Title area.
+    7) The "Host:" HTTP request header has been added.
+    8) A new toggle button, DeferPix, has been added that turns delayed image
+        loading on and off  (or you can type 'i' if you prefer).
+    9) If serious HTML command errors are encountered on a visited page, a
+        small message saying so will appear at the bottom of the page.
+
+Chimera 1.70 also contains a long list of bug fixes, including these:
+    * Some 20 different memory leaks have been fixed, including all the
+        major ones.
+    * Handling of excess "../"s in a relative URL has been fixed, and URL
+        parsing in general has been greatly improved.
+    * The bug that a JPEG image in a file named *.gif would not only fail,
+        but prevent ALL further image display has been fixed.
+    * A page's Title and URL are now restored in many cases where before they
+        weren't.
+
+All the Chimera 1.65 patches up through 1.65p1  (plus one stray)  are included.
+
+   The source code differences between 1.65p1+1 and 1.70 are so extensive
+that patches against 1.65 or 1.65p1 will not be provided.
+
+   For details of the numerous changes included in 1.65p0 and 1.65p1, see
+"http://hasse.mathematik.tu-muenchen.de/~nikl/chimera-1.65p/index.html".
+A Web page for Chimera 1.70 is then just one click away;  notes about known
+problems and fixes will be put there as the opportunity arises.
+
+
+
+DETAILS OF THE NEW FEATURES  (see ./CHANGES for the real nitty-gritty):
+
+1. Tables
+
+   The table support in 1.70 includes: 
+        * arbitrarily nested tables,
+        * arbitrary number of columns and rows per table,
+        * multi-line table items,
+        * support for "width="  (including widths of "w%"),
+        * support for "colspan=",
+        * support for "cellpadding=",
+        * implicit table tags  (for bad/broken HTML that leaves out tags),
+        * captions, and
+        * handling of quotes around integer values in table tag parameters.
+
+   Table formatting uses a "1 pass with retroactive fixups" algorithm.  This
+is not as good as a good 2-pass system, but it does quite well in most of the
+cases I've seen.  The main case where it does less well is with long
+sentences in non-fixed-width cells in left-side table columns.  In that
+case, it can give "too much" space to the one column, at the "expense" of
+columns to its right.
+
+   The Print, Pretty Print, select  (via mouse),  and anchor locate routines
+have all been updated to work with Web pages containing tables.  The output
+usually even comes out in columns.  Note, however, that lines of text in
+different columns of a multi-column Web page are likely to be offset by a
+fraction of a line and may resolve to different lines in the ASCII output.
+
+   Deficiencies: There is no support for "rowspan=".
+
+
+2. mailto:user@domain now supported
+
+   Chimera now allows you to reply to mailto: URLs.  The support is provided
+via a helper program and requires Perl  (4.036 will do, as well as 5.003 or
+later -- if you don't already have it, consider getting it, it's cool ;).  The
+helper script for mailto:user@domain URLs ought to work out of the box.
+Clicking on the URL brings up a fill-in form.  Click on the "Mail" button to
+send the message, which will then also be shown with most of its headers
+in the Chimera window so you can then save it to a file if you wish.
+
+   See the text of the script for some ideas how to bring up your favorite
+mail client instead and pass the address to it.
+
+
+3. Display refresh optimization
+
+   The display refresh optimization is the result of redisplaying only things
+actually inside the refresh region.  Previously, 100% of everything remotely
+associated with the region  (including items "on the same line as" the area
+being refreshed)  would be redisplayed.  While the improvement was often small
+in non-table documents, the improvement in table documents was significant.
+
+
+4. Internal image handling improvements
+
+   Previously, an image was loaded and converted every time it was needed,
+and if the image appeared several times on a page, it was loaded and
+converted several times.  Chimera 1.70 now loads and converts each image only
+once per Web page and saves X-server calls for the duplicates as well.  This
+speedup is particularly nice on pages that use small colored "bullet" graphic
+dots for lists, and greatly reduces redisplay time in Delayed Image mode when
+you have clicked and loaded a deferred image.
+
+
+5. DNS caching
+
+   The vast majority of domain name server lookups were for the same host
+name several times in a row.  Chimera 1.70 caches up to two DNS lookup
+results, cutting the number of DNS lookups required by about 90%  (even
+more when you use an HTTP proxy).
+
+
+6. Connection progress displays
+
+   Downloading progress is displayed as before, but now you can also follow
+the progress  (or lack thereof)  of each connection before any data are
+forthcoming.  Connection progress is displayed in the Title area.
+
+
+7. "Host:" HTTP request header added
+
+   Joining the ranks of modern browsers, Chimera 1.70 now uses the "Host:"
+header in its HTTP requests.  (It is mandatory in HTTP/1.1, and is required
+to identify the desired document on multi-homed web sites.)
+
+
+8. DeferPix button added
+
+   A new button, labelled "DeferPix" has been added to allow dynamic
+selection of delayed image loading.  It is a toggle button that turns light
+or dark to indicate whether delayed image loading is currently selected.  The
+keyboard key "i"  (for "image")  may also be used to toggle delayed image
+loading.  (The keyboard key may be used even if you use a special button
+configuration that does not include the DelayPix button itself.)
+
+   The X resource delayImageLoads now just sets the initial state.
+
+
+9. HTML syntax error display
+
+   When a document contains HTML syntax errors, the resulting display may
+not be what the author intended.  Such errors include unterminated font
+changes, unclosed tables, and over a dozen other causes.  When such errors
+are found, a small message appears at the end of the page.
+
+   This extra message is separate from the document itself.  It cannot be
+selected with the mouse or found by Search, and it will not be included in
+File, Print, or Email output.
+
+   The default is to display the message if >0 errors are encountered.  You
+may change this threshold using the new X resource *html.htmlErrorMsgCutoff.
+Its default value is 0.  A negative value disables display of these messages.
+A non-negative value limits these messages to pages with more errors than the
+specified cutoff.
+
+
+
+WHAT FILES ARE HERE
+-------------------
+
+The Chimera distribution is made up of several parts:
+
+src            The source code for Chimera -- this is
+               code originally written by John Kilburg.
+
+lib            Run-time configuration files and help page for Chimera.
+
+mxw            Miscellaneous X widgets written by various people.
+
+libhtmlw       This is the HTML widget.  It was originally written at NCSA,
+               and you could find an original version of this code in the
+               Mosaic-2.4 distribution  (see libhtmlw/README for more).
+               It has, however, been extensively modified by others for
+               Chimera.
+
+util           Utility programs used by chimera.  E.g., the mailto script
+               lives here until it's installed.
+
+xloadimage     Functions for handling graphics images -- this code was
+               snarfed from xloadimage which is available on ftp.x.org.
+
+compat         This directory was grabbed from the TCL 7.3 distribution.
+               It contains functions used by chimera that may not exist
+               on all machines.  I grabbed strcasecmp() from the BSD
+               sources.
+
+common         Stuff common to all of the above directories  (memory
+               allocation, in particular).
+
+   You should examine the files in each of these directories for copyright
+and distribution information.
+
+
+
+WHY CREATE 1.70 WHEN CHIMERA 2.XXX IS AVAILABLE?
+------------------------------------------------
+
+   This is intended as "a better Chimera 1.*" and a stopgap until Chimera 2.*
+gets enough further along to be a superset of Chimera 1.*.  Unfortunately,
+although Chimera 2 has lots of neat new features, it's clearly  (as ad-
+vertised)  alpha software -- crashing too often to suit me, and not even
+supporting &nbsp  (as of 2.164).  Also, several features of Chimera 1.65,
+such as Emacs-like editing keys in text widgets and gamma correction, were
+absent in Chimera 2.
+
+   The addition of substantial table support and dynamic selection of delayed
+image loading seemed like big enough changes to merit rounding the version
+number up to 70.  Once Gerhard and I got going, we ended up adding a few
+dozen more new features and fixed many bugs, making "70" well earned.  The
+other reason for choosing "1.70" was to avoid confusion with 1.65 and
+anything John might want to do.  Numbers 1.66 to 1.69 were skipped.
+
+   Enjoy,
+Winston Edmond <wbe@shore.net>
+Gerhard Niklasch <nikl@mathematik.tu-muenchen.de>
+
+Tuesday, May 6, 1997

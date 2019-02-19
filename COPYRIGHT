@@ -1,0 +1,24 @@
+First off, you have to abide by the copyright stuff in libhtmlw.  It
+is the most restrictive.  The next most restrictive is the ScrollText
+copyright in mxw.  MAKE SURE THAT YOU READ THEM BEFORE USING CHIMERA
+FOR ANYTHING OTHER THAN FREE ACADEMIC USE.
+
+Many of the files here (mostly in src)
+
+Copyright (C) 1993, 1994, 1995, John Kilburg.
+
+See src/copyright.h for details.  Basically, you can use this as long
+as you don't sell it (i.e. you can use it for internal business,
+educational, or personal use).
+
+The files in libhtmlw/ are
+
+Copyright (C) 1993, Board of Trustees of the University of Illinois
+
+See the top of libhtmlw/HTML.h for details.
+
+There is code in compat that is
+
+Copyright (c) 1988-1993 The Regents of the University of California.
+
+Check out the code in xloadimage/ for details copyright information.

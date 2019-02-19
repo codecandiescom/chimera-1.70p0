@@ -1,0 +1,11 @@
+#include <../Common.tmpl>
+
+SRCS = dmem.c
+OBJS = dmem.o
+
+
+EXTRA_INCLUDES = -I../
+
+NormalLibraryTarget(common, $(OBJS))
+
+DependTarget()

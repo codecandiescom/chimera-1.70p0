@@ -1,0 +1,40 @@
+#include <../Common.tmpl>
+
+#if NEED_STRSTR > 0 || NEED_GETCWD > 0 || NEED_STRTOL > 0 || NEED_STRCASECMP > 0
+COMPATLIB = -L../compat -lxcompat
+DEPCOMPAT = ../compat/libxcompat.a
+#endif
+
+SRCS = main.c url.c net.c ftp.c convert.c gopher.c http.c  \
+       util.c inline.c \
+       document.c local.c widget.c cache.c mime.c input.c md5.c auth.c \
+       fallback.c lang.c stringdb.c
+
+OBJS = main.o url.o net.o ftp.o gopher.o http.o \
+       util.o document.o local.o cache.o mime.o input.o \
+       md5.o auth.o lang.o stringdb.o inline.o widget.o convert.o \
+       fallback.o
+
+DEFINES          = $(XRELEASE) $(CDEFINES) $(CSOCKS) $(CTERM) $(CEXTRA_DEFINES)
+INCLUDES         = -I../libhtmlw -I../mxw -I../ -I../xloadimage $(CTERMINC) \
+                   -I../common
+EXTRA_LOAD_FLAGS = /* -static */
+EXTRA_LIBRARIES  = -L../mxw -lmxw -L../libhtmlw -lhtmlw \
+                   -L../xloadimage -lxloadimage $(COMPATLIB) \
+                   -L../common -lcommon \
+                   $(CSOCKSLIB) $(CTERMLIB) $(CEXTRA_LIBS) \
+                   XawClientLibs -lm
+
+LOCAL_DEPLIBS    = ../common/libcommon.a ../mxw/libmxw.a \
+                   ../libhtmlw/libhtmlw.a \
+                   ../xloadimage/libxloadimage.a $(DEPCOMPAT)
+
+AllTarget(chimera)
+
+NormalProgramTarget(chimera, $(OBJS), $(LOCAL_DEPLIBS), MyNull, MyNull)
+
+InstallProgram(chimera,$(CBINDIR))
+InstallManPage(chimera,$(CMANDIR))
+InstallAppDefaults(Chimera)
+
+DependTarget()

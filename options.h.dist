@@ -1,0 +1,72 @@
+/*
+ * options.h
+ *
+ * Copyright (C) 1994, 1995, John Kilburg (john@cs.unlv.edu)
+ *
+ * See src/copyright.h for details
+ */
+
+#define PRINT_COMMAND "lpr -h -P%s"		/* command to pipe to print */
+#define USER_AGENT "Chimera/1.70p0"		/* User-Agent field for HTTP */
+#define EMAIL_COMMAND "mail %s"			/* pipe to command for mail */
+#define PATH CUTILDIR 				/* default program PATH */
+/*#define CHILD_STDERR "/dev/null"*/                /* stderr for children
+                                                   of chimera.  Can be
+                                                   ~/.chimera_error */
+
+/*
+ * You may need this if your /bin/sh can't handle ';' when the PATH is
+ * defined in the command line like so:
+ *
+ * PATH=$PATH:%s; %s
+ */
+/*
+#define NOSEMICOLON 1
+*/
+
+/*
+ * Define this if you want to cache documents that require authentication.
+ */
+/*
+#define CACHE_AUTH 1
+*/
+
+/*
+ * Comment this out if you don't want non-blocking connects.  They seem
+ * to cause problems on some machines.  While Chimera waits for a blocking
+ * connect to succeed, the Cancel button won't work and the status display
+ * will not be updated.
+ */
+
+#define NONBLOCKING_CONNECT 1
+
+
+/*
+ * Comment this out if alarm and/or setjmp/longjmp don't work on your platform.
+ * Chimera would use them to make lengthy name service lookups interruptible;
+ * if it can't, it'll try a somewhat less efficient method.
+ */
+
+#define USE_LONGJMPS 1
+
+
+/*
+ * SCO systems might need this
+ */
+/*
+#define MAXPATHLEN 1024
+*/
+
+/*
+ * Timeout grains in seconds plus microseconds.  Used to stay in control
+ * while packets are being read over a network connection.  Not used for
+ * nonblocking DNS lookups  (these have much longer values hardcoded into
+ * src/net.c).
+ *
+ * Used to be 1 second in 1.65;  on Linux, and linked up on a fast net,
+ * half a second is probably more reasonable and gives more uniform behavior
+ * (no dependence on when the full second ticks happen). -- GN 1997May2
+ */
+
+#define NET_WAIT_TO_SECS 0
+#define NET_WAIT_TO_USECS 500000

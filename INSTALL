@@ -1,0 +1,54 @@
+-------------------------
+INSTALLATION INSTRUCTIONS
+-------------------------
+
+Optional:
+
+	- jpegsrc (ftp.isri.unlv.edu:/pub/mirror/jpegsrc)
+	  If you want chimera to be able to handle JPEG inline images.
+	  (If you have the djpeg executable, look no further --
+	  that's the one.)
+        - ghostscript and ghostview (aeneas.mit.edu:/pub/gnu)
+          If you want to be able to view downloaded postscript or have
+          inline postscript images.
+        - xv, xloadimage, or other GIF/JPEG/TIFF/... viewer to be able
+          to view downloaded image files.
+        - mpeg_play to able to view downloaded MPEG files.
+        - perl
+
+To compile chimera, type:
+
+			cp Common.tmpl.dist Common.tmpl
+			cp options.h.dist options.h
+
+			# for X11R5 or higher
+			xmkmf -a
+                        make
+
+			# for X11R4
+                        xmkmf
+			make Makefiles depend clean all
+
+If the compile was success, check the settings of the files in util/
+if you want to use them:
+
+- probably wrong path name for perl in the #! line,
+- duplicates of names from options.h (e.g., ".chimera_bookmark")
+  which need to be changed if options.h was changed,
+- the domain name of an NNTP server which should be replaced with
+  the name of one's local server, and
+- a directory name "cachepath" in access_cache that needs fixing.
+
+You can test chimera by typing
+
+			test-chimera
+
+If the test worked OK, you can install chimera by typing
+
+			make install
+
+You can use the '-n' flag with make to verify that everything will
+work OK.
+
+I suggest that you look at Common.tmpl and options.h to make sure that the
+settings look OK to you.

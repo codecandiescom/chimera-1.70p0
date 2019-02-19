@@ -1,0 +1,32 @@
+#include <../Common.tmpl>
+
+#ifndef ultrix
+#if ProjectX > 4
+R4HEADERS =
+R4SRCS =
+R4OBJS =
+#else
+R4HEADERS = Porthole.h PortholeP.h
+R4SRCS = Porthole.c
+R4OBJS = Porthole.o
+#endif
+#else
+R4HEADERS =
+R4SRCS =
+R4OBJS =
+#endif
+
+HEADERS = ScrollText.h ScrollTextP.h OutputSel.h OutputSelP.h \
+          StrReq.h StrReqP.h Bookmark.h BookmarkP.h \
+          AuthReq.h AuthReqP.h \
+          $(R4HEADERS)
+SRCS = ScrollText.c OutputSel.c StrReq.c AuthReq.c Bookmark.c $(R4SRCS)
+OBJS = ScrollText.o OutputSel.o StrReq.o AuthReq.o Bookmark.o $(R4OBJS)
+
+EXTRA_INCLUDES = -I./
+EXTRA_DEFINES  = $(XRELEASE) $(CEXTRA_DEFINES)
+
+NormalLibraryTarget(mxw, $(OBJS))
+DependTarget()
+
+install.man::

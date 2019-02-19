@@ -1,0 +1,64 @@
+                                Chimera 1.65
+                       X11/Athena World-Wide Web Client
+                             written by John Kilburg
+
+Chimera is an X/Athena Web client for UNIX-based workstations.
+If you do not know about the Web then try to grab a FAQ from
+rtfm.mit.edu using ftp.  Chimera does not require Motif.
+
+There is a mailing list called (send bug reports here)
+
+bug-chimera@cs.unlv.edu
+
+If you want to join the list (receive the emails that go to bug-chimera)
+send email to
+
+bug-chimera-request@cs.unlv.edu
+
+There is also an announce mailing list for announcements of beta
+and non-beta versions.  If you want to join the list, send email to
+
+chimera-announce-request@cs.unlv.edu
+
+Read INSTALL for installation instructions.  Read README.hints for
+installation hints.
+
+The Chimera distribution is made up of several parts:
+
+src            This is the source code for Chimera.  This is
+               code written by John Kilburg.
+
+lib            Run-time configuration files for Chimera.
+
+mxw            These are miscellaneous X widgets written by various
+               people.
+
+libhtmlw       This is the HTML widget.  It was written at NCSA.  You
+               can find the original version of this code in the
+               Mosaic-2.4 distribution.  Read libhtmlw/README for
+               more details.
+
+util           Utility programs used by chimera.
+
+xloadimage     Functions for handling graphics images.  This code was
+               snarfed from xloadimage which is available on ftp.x.org.
+
+compat         This directory was grabbed from the TCL 7.3 distribution.
+               It contains functions used by chimera that may not exist
+               on all machines.  I grabbed strcasecmp() from the BSD
+               sources.
+
+common         Stuff common to all of the above directories.
+
+You should examine the files in each of these directories for
+copyright and distribution information.
+
+Jay and Greg are the system guys for the engineering college at UNLV.
+They have done a really nice job of setting up and maintaining the
+computing environment here.  A lot of the development
+work was also done on a Linux box.  I am grateful to Linus Torvalds
+and the other folks (too numerous to mention) who have
+worked on Linux.
+
+John Kilburg
+john@cs.unlv.edu

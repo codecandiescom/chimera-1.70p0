@@ -1,0 +1,2 @@
+set environment XFILESEARCHPATH Chimera.ad
+set environment XUSERFILESEARCHPATH ../Chimera.ad.test

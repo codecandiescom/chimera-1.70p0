@@ -1,0 +1,138 @@
+Chimera.path: ./util:../util
+Chimera.convertFiles: ~/.chimera_convert:./lib/convert:../lib/convert
+Chimera.protocolFiles: ~/.chimera_protocol:./lib/protocol:../lib/protocol
+Chimera.mailCapFiles: ~/.mailcap:./lib/mailcap:../lib/mailcap
+Chimera.mimeTypeFiles: ~/.chimera_mime.types:./lib/mime.types:../lib/mime.types
+Chimera.cacheInfoFiles: ~/.chimera_cacheinfo:./lib/cacheinfo:../lib/cacheinfo
+!
+! These aren't right but are good enough for testing.
+!
+Chimera.helpURL: file:lib/help.html
+Chimera.homeURL: file:lib/home.html
+
+Chimera*background:                moccasin
+Chimera*showGrip:                  false
+
+Chimera*Scrollbar.background:      burlywood2
+Chimera*Command.background:        burlywood2
+Chimera*Toggle.background:         burlywood2
+Chimera*Box.orientation:           horizontal
+Chimera*Label.borderWidth:         0
+
+Chimera*Form.resizeable:           true
+Chimera*Form.borderWidth:          0
+
+Chimera*Viewport*allowHoriz:       true
+Chimera*Viewport*allowVert:        true
+
+Chimera*file.label:                File
+Chimera*open.label:                Open
+Chimera*bookmark.label:            Bookmark
+Chimera*quit.label:                Quit
+Chimera*reload.label:              Reload
+Chimera*help.label:                Help
+Chimera*source.label:              Source
+Chimera*home.label:                Home
+Chimera*back.label:                Back
+Chimera*search.label:              Search
+Chimera*cancel.label:              Cancel
+Chimera*deferpix.label:            DeferPix
+
+Chimera*html.height:               600
+Chimera*html.width:                600
+Chimera*html.horizontalScrollOnTop: True
+Chimera*html.activeAnchorBG:       moccasin
+Chimera*html.anchorUnderlines:     1
+Chimera*html.visitedAnchorUnderlines: 1
+Chimera*html.dashedVisitedAnchorUnderlines: true
+Chimera*html.autoSize:             true
+
+Chimera*Bookmark*title:            Bookmarks
+Chimera*Bookmark*Box.hSpace:       10
+Chimera*Bookmark*markbox.hSpace:   20
+Chimera*Bookmark*markadd.label:    Add
+Chimera*Bookmark*markopen.label:   Open
+Chimera*Bookmark*markdel.label:    Delete
+Chimera*Bookmark*groupadd.label:   Add Group
+Chimera*Bookmark*groupdel.label:   Delete Group
+Chimera*Bookmark*Viewport.height:  150
+Chimera*Bookmark*Viewport.width:   400
+Chimera*Bookmark*Viewport.borderWidth: 1
+Chimera*Bookmark*dismiss.label:    Dismiss
+Chimera*Bookmark*List.forceColumns: true
+Chimera*Bookmark*List.defaultColumns: 1
+Chimera*Bookmark*groupform.defaultDistance: 3
+Chimera*Bookmark*markform.defaultDistance: 3
+Chimera*Bookmark*srgroupadd.strreqMessage: Enter Group Name
+Chimera*Bookmark*srmarkadd.strreqMessage: Enter Bookmark Name
+
+Chimera*OutputSel*title:           Output Selector
+Chimera*OutputSel.outputType:      2
+Chimera*OutputSel.outputDevice:    2
+Chimera*OutputSel*Box.hSpace:      10
+Chimera*OutputSel*obox.hSpace:     60
+Chimera*OutputSel*plain.label:     Plain Text
+Chimera*OutputSel*pretty.label:    Pretty Text
+Chimera*OutputSel*ps.label:        Postscript
+Chimera*OutputSel*raw.label:       HTML/Raw
+Chimera*OutputSel*printer.label:   Printer
+Chimera*OutputSel*email.label:     Email
+Chimera*OutputSel*file.label:      File
+Chimera*OutputSel*ok.label:        OK
+Chimera*OutputSel*clear.label:     Clear
+Chimera*OutputSel*dismiss.label:   Dismiss
+Chimera*OutputSel*ScrollingText.width: 300
+
+Chimera*StrReq*Box.hSpace:         10
+Chimera*StrReq*ok.label:           OK
+Chimera*StrReq*clear.label:        Clear
+Chimera*StrReq*dismiss.label:      Dismiss
+Chimera*StrReq*ScrollingText.width: 300
+Chimera*password*title:            Enter password
+Chimera*password.strreqMessage:    Enter password
+Chimera*username*title:            Enter username
+Chimera*username.strreqMessage:    Enter username
+Chimera*filename*title:            Enter filename
+Chimera*filename.strreqMessage:    Enter filename
+Chimera*url*title:                 Enter URL
+Chimera*url.strreqMessage:         Enter URL
+Chimera*search.title:              Enter search
+Chimera*search.strreqMessage:      Enter search
+
+Chimera*urllabel.label:            URL   :
+Chimera*urllabel.left:             ChainLeft
+Chimera*urllabel.right:            ChainLeft
+Chimera*urldisplay.left:           ChainLeft
+Chimera*urldisplay.right:          ChainRight
+Chimera*urldisplay.fromHoriz:      urllabel
+Chimera*urldisplay*sensitive:      true
+Chimera*urldisplay.width:          500
+Chimera*urldisplay*editType:       edit
+
+Chimera*titlelabel.label:          Title :
+Chimera*titlelabel.left:           ChainLeft
+Chimera*titlelabel.right:          ChainLeft
+Chimera*titledisplay.left:         ChainLeft
+Chimera*titledisplay.right:        ChainRight
+Chimera*titledisplay.fromHoriz:    titlelabel
+Chimera*titledisplay*sensitive:    false
+Chimera*titledisplay.width:        500
+Chimera*titledisplay*displayCaret: False
+Chimera*titledisplay*editType:     read
+
+Chimera*Label.font: -*-lucidatypewriter-medium-r-normal-*-*-120-*-*-*-*-iso8859-1
+Chimera*Command.font: -*-lucida-bold-r-normal-sans-*-120-*-*-*-*-iso8859-1
+Chimera*Toggle.font: -*-lucida-bold-r-normal-sans-*-120-*-*-*-*-iso8859-1
+Chimera*urldisplay.font:    -*-lucida-bold-r-normal-sans-*-120-*-*-*-*-iso8859-1
+Chimera*titledisplay.font:  -*-lucida-bold-r-normal-sans-*-120-*-*-*-*-iso8859-1
+
+Chimera*header1Font:   -*-helvetica-bold-r-normal-*-*-240-*-*-*-*-iso8859-1
+Chimera*header2Font:   -*-helvetica-bold-r-normal-*-*-180-*-*-*-*-iso8859-1
+Chimera*header3Font:   -*-helvetica-bold-r-normal-*-*-140-*-*-*-*-iso8859-1
+Chimera*header4Font:   -*-helvetica-bold-r-normal-*-*-120-*-*-*-*-iso8859-1
+Chimera*header5Font:   -*-helvetica-bold-r-normal-*-*-100-*-*-*-*-iso8859-1
+Chimera*header6Font:   -*-helvetica-bold-r-normal-*-*-80-*-*-*-*-iso8859-1
+Chimera*font:          -*-helvetica-medium-r-normal-*-*-120-*-*-*-*-iso8859-1
+Chimera*boldFont:      -*-helvetica-bold-r-normal-*-*-120-*-*-*-*-iso8859-1
+Chimera*italicFont:    -*-helvetica-medium-o-normal-*-*-120-*-*-*-*-iso8859-1
+Chimera*addressFont:   -*-helvetica-medium-o-normal-*-*-140-*-*-*-*-iso8859-1

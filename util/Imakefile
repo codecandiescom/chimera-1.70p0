@@ -1,0 +1,17 @@
+#include <../Common.tmpl>
+
+all::
+
+InstallScript(dotelnet,$(CUTILDIR))
+InstallScript(do3270,$(CUTILDIR))
+InstallScript(pstopxm,$(CUTILDIR))
+InstallScript(playaudio,$(CUTILDIR))
+InstallScript(mailto.pl,$(CUTILDIR))
+/*
+InstallScript(access_nntp,$(CUTILDIR))
+InstallScript(access_cache,$(CUTILDIR))
+InstallScript(mosaic2chimera,$(CUTILDIR))
+InstallScript(bm2html,$(CUTILDIR))
+*/
+
+DependTarget()

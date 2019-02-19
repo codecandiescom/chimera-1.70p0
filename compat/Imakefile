@@ -1,0 +1,37 @@
+#include <../Common.tmpl>
+
+/* This is goofy but it seems reasonable to me right now */
+
+#if NEED_STRCASECMP > 0
+STRCASECMP_C = strcasecmp.c
+STRCASECMP_O = strcasecmp.o
+#endif
+
+#if NEED_GETCWD > 0
+GETCWD_C = getcwd.c
+GETCWD_O = getcwd.o
+#endif
+
+#if NEED_STRSTR > 0
+STRSTR_C = strstr.c
+STRSTR_O = strstr.o
+#endif
+
+#if NEED_STRTOL > 0
+STRTOL_C = strtol.c strtoul.c
+STRTOL_O = strtol.o strtoul.o
+#endif
+
+SRCS = $(GETCWD_C) $(STRSTR_C) $(STRTOL_C) $(STRCASECMP_C)
+
+OBJS = $(GETCWD_O) $(STRSTR_O) $(STRTOL_O) $(STRCASECMP_O)
+
+#if NEED_STRTOL > 0 || NEED_STRSTR > 0 || NEED_GETCWD > 0 || NEED_STRCASECMP > 0
+NormalLibraryTarget(xcompat, $(OBJS))
+
+DependTarget()
+#else
+all:
+
+depend::
+#endif

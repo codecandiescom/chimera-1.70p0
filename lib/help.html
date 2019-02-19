@@ -1,0 +1,404 @@
+<html>
+<head>
+<title>Chimera Help</title>
+</head>
+<body>
+<h2>Chimera Help</h2>
+
+<h3>Program Info</h3>
+
+<p>
+This is version 1.70 of Chimera, written and watched over by John Kilburg
+(john@cs.unlv.edu) and added to by many others.
+Chimera 1.70 was put together by Winston Edmond, incorporating contributions
+from a number of other people. (See the README and CHANGES files in the
+chimera distribution for more info). It should serve as a stable lightweight
+browser for daily use in the late 1990s while version 2.* is still
+in alpha development.
+<p>
+Check out the <a href="http://www.unlv.edu/chimera/">chimera home page</a>,
+and find out about known bugs and latest fixes from the <a href=
+"http://hasse.mathematik.tu-muenchen.de/%7Enikl/chimera-1.65p/index.html"
+>Beyond 1.65</A> site.
+
+<h3>Bug Reports</h3>
+
+<p>
+If you think you have discovered a bug, please send email to
+<A HREF="mailto:bug-chimera@cs.unlv.edu">bug-chimera@cs.unlv.edu</A>
+with a description of the bug, the machine/OS
+that you are using, the version of chimera that you are using, and
+one or more URLs that expose the bug.
+
+<h3> Mouse Button Usage </h3>
+
+<p>
+If you click on an anchor with the first mouse button then the
+document will be loaded and displayed (if possible).  If the second
+mouse button is used then Chimera will ask for a filename and save
+the document to the file.
+
+<h3> Quit </h3>
+
+<p>
+Clicking on this button causes Chimera to stop execution.  It is important
+that you use this button instead of, say, control-c.
+
+<h3> Open</h3>
+
+<p>
+This command tells Chimera to display a requester for a document
+URL.  The cursor automatically warps to the text entry field so
+mouse movement is not required after the button is pressed.  A click
+on the cancel button of the requester causes Chimera to discard the
+requester and resume operation as before.  A click on the OK button
+causes Chimera to attempt to load the specified document.  If the
+URL is invalid or the document is unavailable then an error message
+is displayed.  If the document was successfully accessed then
+Chimera displays the document (in the case of HTML) or executes
+an external program to deal with the document.
+
+<p>
+You can also edit the URL display field which is located between the
+main document window and the document title display.
+
+<p>
+In both cases, you can use the shortcut <kbd>some.website.com</kbd>
+to access the URL <code>http://some.website.com/</code>. (This shortcut
+expansion is applied whenever the string you typed in contains neither
+a colon nor a slash, so you can still access relative URLs like
+<code>otherdoc.html</code> by typing <kbd>./otherdoc.html</kbd>; the
+shortcut expansion feature can be turned off entirely by setting the
+X resource <kbd>Chimera*openButtonShortcut</kbd> to <kbd>False</kbd> or
+<kbd>off</kbd>).
+
+<h3>Home</h3>
+
+<p>
+When the home button is pressed the document that was first displayed
+is displayed.  This is the same as pressing Back until the first
+document is visible.
+
+<h3>Back</h3>
+
+<p>
+Clicking on this button causes Chimera to ``back up'' to the previous
+document.
+This button will be deactivated if only one document is available.
+
+<h3>Source</h3>
+
+<p>
+Clicking on this button causes Chimera to display the HTML source of the
+currently displayed document.
+
+<h3>Reload</h3>
+
+<p>
+Clicking on this button causes Chimera to reload the current document.
+This is useful for a when the original document has changed (you are
+currently working on a project, for example) and you need to refresh
+the document.
+
+<h3>File</h3>
+
+<p>
+When this button is pressed a popup window appears which can be used
+to tell chimera to save or print the currently displayed document.
+
+<h3>Help</h3>
+
+<p>
+Clicking on this button causes Chimera to display the document you are
+reading now.
+
+<h3> Bookmark </h3>
+
+<p>
+When you click on this button a list of bookmarks pops up.  To view a
+document which has a bookmark just double click on the bookmark.
+Along the button of the bookmark list window is a row of four buttons:
+open, dismiss, add, and delete.  The open button opens the currently
+highlighted bookmark.  The dismiss button hides the bookmark list.
+The add button adds the title of the current document to the 
+bookmark list (the URL is used if there is no title).  The
+delete button deletes the currently highlighted bookmark.
+
+<h3> Search </h3>
+
+<p>
+When the search button is pressed a requester appears which allows
+you to enter a string for Chimera to find.  If the string is found
+then the document position is changed so that the string is
+viewable and the string is highlighted.  Chimera only allows
+forward, case-insensitive searches.  If the search reaches the
+end of the page, it will wrap to the top of the document.
+
+<h3>Cancel</h3>
+
+<p>
+The cancel button can be used to stop the loading of the currently
+loading document.  Note that cancel doesn't work while chimera tries
+to make a connection to a remote host.  It only works once the
+transfer has started (most of the time).
+
+<h3>DeferPix</h3>
+
+<p>
+This determines whether or not Chimera delays loading non-local images.
+Click on the button to toggle it on or off.  When selected, the
+DeferPix box will be darkened and Chimera will not show images that
+require downloading until the user clicks on the icon that is located
+in place of the image.  When DeferPix is not selected, Chimera
+automatically loads all images.  Images that come from local or cached
+files are always displayed.
+
+
+<h3> Keyboard Shortcuts </h3>
+
+<pre>
+Space - scroll forward
+b     - scroll backward
+h     - home
+u     - back
+l     - reload
+?     - help
+q     - quit
+d     - source
+o     - open
+f     - file
+s     - search
+m     - bookmark
+i     - toggle deferpix
+</pre>
+<p>
+Also, cursor up and down keys can be used for scrolling.
+
+<h3>Uniform Resource Locators (URLs)</h3>
+
+<p>
+Chimera uses URLs to locate information.  Although a discussion of
+URLs is beyond the scope of this document, here are a couple of
+examples:
+
+<pre>
+
+ftp://ftp.cs.unlv.edu/pub/chimera - Retrieve a listing of the directory
+                                    /pub/chimera on the anonymous
+                                    FTP server ftp.cs.unlv.edu.
+
+file:~john/.mailcap               - Retrieve and display John's mailcap file.
+
+http://www.unlv.edu/chimera/      - Retrieve and display the chimera home
+                                    page.
+
+mailto:john@cs.unlv.edu           - Send email to John, either using an
+                                    external mailer or via a form appearing
+                                    in chimera's own window.  (This will work
+                                    only if you have perl installed.)
+</pre>
+
+<h3>Environment variables</h3>
+
+<p>
+Chimera uses the following environment variables
+
+<pre>
+WWW_HOME               This is used to specify the first document to be
+                       loaded.  X resource is homePage.
+
+USER                   Used to determine the username of the user running
+                       chimera.
+
+PRINTER                This is used by chimera to determine the default
+                       printer.  X resource is printerName.
+
+EMAIL                  Email address used for anonymous FTP.  This is needed
+                       for users of TERM.
+
+HOME                   Used by the mailto helper script to find out where
+                       to store a dead.letter if necessary.
+
+MAIL_CLIENT            Used to tell the mailto helper script which external
+                       mail program to run, if any.  Could be something like
+                       'xterm -e pine'.  The recipient address will be passed
+                       to the client as a commandline argument.  If this
+                       variable is not set in the environment, the mailto
+                       script will bring up a mail composition form in the
+                       chimera window itself.
+
+REPLYTO                Used by the mailto helper script to obtain a default
+                       value for the Reply-To mail header when it brings up
+                       the form.
+
+SIGNATURE              Used by the mailto script to find the user's signature
+                       file when it brings up a form.  If SIGNATURE is not set
+                       and a file $HOME/.signature exists, it will be used.
+                       You can always discard the signature when filling in
+                       the form.
+
+http_proxy             This is used to specify the server to use for
+                       proxied HTTP requests.  The format is the
+                       same as an HTTP URL.  For example,
+                       http://firewall.blah.edu/
+
+gopher_proxy           This is used to specify the server to use for
+                       proxied Gopher requests.  The format is the same
+                       as an HTTP URL.  For example,
+                       http://firewall.mumble.com/
+
+ftp_proxy              This is used to specify the server to use for
+                       proxied FTP requests.  The format is the same
+                       as an HTTP URL.  For example,
+                       http://foo.bar.ca/
+
+wais_proxy             This is used to specify the server to use for
+                       proxied WAIS requests.  The format is the same
+                       as an HTTP URL.  For example,
+                       http://barp.nv.us/
+
+no_proxy               This is a comma separated list of domains that
+                       should not be proxied.
+
+all_proxy              This is the default proxy host for all protocols.
+</pre>
+
+<h3>X Resources</h3>
+
+<p>
+Here is a list of Chimera-specific X resources. Default values for these
+and many more internal ones can be found in Chimera's app-defaults file
+and in the Common.tmpl file in the source tree.
+
+<pre>
+convertFiles           A colon separated list of files that describe the
+                       converters.
+
+homeURL                URL of the first document to load.
+
+helpURL                URL of the help document.
+
+path                   A colon separated list of directories to search
+                       for viewer and conversion programs.
+
+showURL                Boolean variable used to specify whether or not the
+                       URL should be displayed on the screen.
+
+showTitle              Boolean variable used to specify whether or not
+                       the title should be displayed on the screen.
+
+anchorDisplay          Boolean variable used to specify whether or not the
+                       URL contents of hyperlink anchors should be displayed
+                       on the fly as the mouse moves over them.
+
+openButtonShortcut     Boolean variable used to specify whether user input
+                       in the URL field or Open Document box should be assumed
+                       to refer to a WWW site if it contains neither a slash
+                       nor a colon.
+
+localIndexFiles        A colon separated list of files which Chimera should
+                       try to display in this order when pointed at a directory
+                       via a file:... URL.  When empty or when nothing matches,
+                       a directory listing will be generated.
+
+button1Box             A comma separated list of buttons to appear on the
+                       first button row.  Possible button names are quit,
+                       open, home, back, source, reload, file, help,
+                       bookmark, search, and cancel.
+
+button2Box             A list of buttons to appear on the second button
+                       row.
+
+printerName            Used to specify the name of the default printer.
+
+cacheOff               If True then chimera will not cache documents.
+                       Performance falls way off if you set this to true.
+
+cacheDir               This is used to specify the directory of the default
+                       cache.  Chimera will not create the
+                       directory if it does not exist and caching will not
+                       occur.
+
+cacheTTL               This specifies the time-to-live for the default cache.
+                       If a document is accessed and the cache entry for that
+                       document is more than cacheTTL seconds then the
+                       document is reloaded from the source.  If zero then
+                       documents are never reloaded (unless the reload
+                       button is pressed).
+
+cacheSize              This specifies the maximum size of the default cache
+                       in bytes.
+                       If the maximum size is exceeded then the least
+                       recently accessed cache document is removed
+                       to make room.  If zero then the cache is allowed to
+                       grow to any size.
+
+cacheClean             If True then chimera will remove the files from the
+                       default cache that it creates when it exits.
+
+mimeTypeFiles          A colon separated list of files that map file
+                       extensions to MIME content-types.
+
+mailCapFiles           A colon separated list of MIME mailcap files to be used
+                       by chimera.
+
+bookmarkFile           The location of the bookmark file.
+
+protocolFiles          A colon separated list of files that describe the
+                       programs to be used for handling protocols.
+
+statusUpdate           The number of times to update the download status
+                       per read (or something).  Setting this to 1 gives
+                       the most frequent updates while higher numbers give
+                       fewer updates.  (Default is 10.)
+
+html.htmlErrorMsgCutoff    If negative, never display the "# HTML errors
+                       found in document" message.  If non-negative, only
+                       display the message if the number of errors found
+                       is greater than this cutoff.  (Default value: 0)
+
+inPort                 The port number that chimera listens on for
+                       incoming information from other programs.
+                       By default, this is set to zero which disables
+                       the feature.
+
+languageDB             Specifies the language database file.  The language
+                       database is a file with a name/value pair per line.
+                       The name and value are separated by a colon.
+
+httpProxy              HTTP proxy URL.
+
+gopherProxy            Gopher proxy URL.
+
+ftpProxy               FTP proxy URL.
+
+waisProxy              WAIS proxy URL.
+
+nntpProxy              NNTP proxy URL.
+
+newsProxy              News proxy URL.
+
+urnProxy               URN proxy URL.
+
+noProxy                Domains with no proxy.
+
+allProxy               Used to specify the default proxy for all protocols.
+
+maxColors              Specify the maximum colors that a single inline
+                       image can have.
+
+delayImageLoads        This determines the initial state of the DeferPix
+                       button.
+
+cacheInfoFiles         It is a colon delimited list of cache info files.
+
+cacheIgnoreExpires     If this is set to True then chimera will ignore
+                       'expires' data from the information server.
+
+gammaCorrect           Set the gamma correction for inline images.  Default
+                       is 0.0 (gamma correction turned off).
+</pre>
+
+<h5><a href="http://www.unlv.edu/chimera/">More information</a></h5>
+</body>
+</html>

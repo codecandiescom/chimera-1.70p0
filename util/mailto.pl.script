@@ -1,0 +1,298 @@
+#!/usr/bin/perl
+# change path if necessary;  should work with Perl4.036 or Perl5.00[1-3]
+# -----------------------------------------------------------------------------
+# Following line is completely obsolete [GN].
+# Id: mailto.pl 1.0 1995/01/03 19:05:15 michael Exp michael $
+#
+# written by Michael Kellen, February 1995
+#
+# MICHAEL KELLEN DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+# INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
+# EVENT SHALL MICHAEL KELLEN BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+# CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
+# USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+# OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+# PERFORMANCE OF THIS SOFTWARE.
+#
+# rewritten by Gerhard Niklasch <nikl@mathematik.tu-muenchen.de>, June 1996,
+# February 1997, April 1997
+# Standard disclaimers continue to apply
+# -----------------------------------------------------------------------------
+# Changes 12 Jun 96:  URL decoding neglected to convert '+' to ' '
+# Changes 12 Jun 96:  Content-Type "application/none" of HTTPHappy caused
+#  	chimera to try and save the response to a file, instead of displaying
+# 	it;  changed this to text/plain
+# It's still broken.  The signature is disrupted en route back from the form.
+# And Chimera fails to URL-encode +'s before URL-encoding spaces to +'s.
+# Changes 02 Feb 97:  Testing now with Chimera's URL-encoding fixed, lessee...
+# 	Also changed the temp file's name to at least attempt to make it
+# 	unique.  It should live in a tmp directory, really.
+# 	Also fixed a stupid little filehandle typo in &Abort.
+# Changes 02 Feb 97:  Duh, URL decoding had character range [0-9A-E]. Fixed.
+# Changes 02 Feb 97:  URL decoding shouldn't choke upon seeing a % sign it
+# 	has produced earlier in the loop.  Duh^2.  Fixed by using a ///ge
+# 	pattern substitution operator.
+# Changes 02 Feb 97:  The signature separator is a line consisting of two
+# 	hyphens _followed by a single space then newline_.  Fixed.  Duh^3.
+# Changes 02 Feb 97:  HTML syntax in the form.
+# Changes 18 Apr 97:  Replaced some Perl horrors  (poor style and/or badly
+#       inefficient)  with more idiomatic constructions.
+#       Made sure it'll work with Perl4.
+#       Made sure addresses like "Joe L. User <luser@foo.com>" and
+#       "luser@foo.com (Joe L. User)" are handled, and make it into
+#       the TITLE field unharmed.  This is not much of a problem when
+#       we can rely on sendmail to do the right thing.  It is when passing
+#       addresses via a shell to an external Mail User Agent;  defused a
+#       few potential security holes here.
+#       Fixed a stupid bug -- $reply was being HTML-entity-escaped before
+#       it had a value.  Duh^IveLostCount.
+# Changes 19 Apr 97:  When we handle mail ourselves and the system mailer
+#       call returns, we display the message and headers, so the user can
+#       save it to a file.  If the mailer reports an error, we catch its
+#       output and display what we can.  Sendmail itself saves stuff to
+#       $HOME/dead.letter so we shouldn't do it again.
+# Changes 24 Apr 97:  Added helpful messages.-- We _don't_ do URL decoding
+#       of addresses although RFC1738 says we should.  This is because we
+#       don't dare to mangle "mailto:joe%earth@galaxy" when a user pastes
+#       that into the Open URL popup...
+# -----------------------------------------------------------------------------
+
+$banner = 'Chimera-1.70 e-mail composition utility (mailto.pl)';
+
+$mailer = '/usr/lib/sendmail -t <';
+$HOME = $ENV{'HOME'};
+$HOME = "/home/$ENV{'USER'}"	if (!$HOME);
+$HOME = '/tmp'			if (!$HOME);
+
+# the main program is just four lines:
+if (&ParseRequest) {
+    &GetCall;			# doesn't return
+}
+&PostCall;			# doesn't return either
+
+# subroutines...
+
+sub
+ParseRequest {
+				# Parse incoming URL of the form
+				#  GET mailto:address
+				# or
+				#  POST mailto:(address field ignored)
+				# followed by Chimera's extra helper headers
+				# (and for a POST, a querystring as a body)
+    ($http_cmd, $http_uri, $http_id) = split (/\s+/, <>, 3);
+
+    while (<>) {
+	chop;
+	($type,$value) = split ( '\s*:\s+' , $_, 2);
+	if ($type eq "") {
+	    last;
+	}
+	if ( $type eq "X-hostname" ) {
+	    $server = $value;	# not used
+	}
+	
+	if ( $type eq "X-filename" ) {
+	    $address = $value;	# (might theoretically contain URL-encoding
+				# [%hex escapes] if the web author actually
+				# followed the specs, but then it might also
+				# contain a % not meant to be URL-decoded,
+				# so we'd better not touch it)
+	}
+    }
+
+    return 1  if ($http_cmd =~ /[Gg][Ee][Tt]/ );
+				# otherwise it should be a POST
+    $_ = <STDIN>;		# slurp the querystring
+    chop ;
+    @fields = split('&', $_, 4);
+				# make sure the bare necessities are there:
+    $filled_in{'HEAD'} = "To: nobody\n\n";
+    $filled_in{'BODY'} = '';
+    $filled_in{'SIG'} = '';
+    $filled_in{'SIGN'} = 'off';
+				# don't rely on them appearing in a particular
+				# order
+    foreach $field (@fields) {
+	($name, $val) = split('=', $field);
+	$filled_in{$name} = $val;
+    }
+#    ($head,$body,$sig,$sign) = split( '&', $_, 4);
+    $head = $filled_in{'HEAD'};
+    $body = $filled_in{'BODY'};
+    $sig  = $filled_in{'SIG'};
+    $sign = $filled_in{'SIGN'};
+
+    return 0;			# so PostCall will follow
+}
+
+
+sub
+GetCall {
+				# produce a mailer or an equivalent FORM
+    $mailer = "$ENV{'MAIL_CLIENT'}"; # (this would need to be an X client;
+				# elm or pine won't work unless run inside
+				# an xterm from a short shell script)
+    if ($mailer) {
+				# we're going to pass the $address to
+				# the mail client via a shell argument,
+				# and the $address presumably came from
+				# any old web page, so we'd better make
+				# sure it doesn't contain any oddities.
+				# The following won't work with X.400
+				# addresses and all those semicolons,
+				# although it should handle all the common
+				# RFC822 stuff.
+	$address =~ s/\s*\(.*\)\s*//;
+	if ($address =~ /<([\w\-\.\@\%\:]+)>/ ) {
+	    $address = "\'$1\'";
+	} elsif ($address =~ /^([\w\-\.\@\%\:]+)/ ) {
+	    $address = "\'$1\'";
+	} else {		# no good address found, let the user add one
+	    $address = '';
+	}
+	system ("$mailer $address");
+	if ($?) {
+	    $error_string = "Mail client invocation error:\n$!\n";
+				# forcing a string context for $!
+	    $message_length = length ($error_string);
+	} else {
+	    $message = "Mail Done\n";
+	    $message_length = 10;
+	}
+	print "HTTP/1.0 200 OK\n";
+	print "Content-type: text/plain\n";
+	print "Content-length: $message_length\n\n";
+	print $message;
+	exit 0;
+    }
+				# no MAIL_CLIENT -- we'll do it with a FORM
+    $sigfile = $ENV{'SIGNATURE'};
+    $sigfile = "$HOME/.signature"
+	unless $sigfile;
+    if (open (SIG, $sigfile)) {
+	@signature = ();
+	while(<SIG>) {
+	    push(@signature, $_);
+	}
+	close(SIG);
+	$signature = join('', @signature);
+    } else {
+	$signature = '';
+    }
+	
+    $replyto = $ENV{'REPLYTO'};
+    if (defined $replyto) {
+	$reply = "Reply-To: $replyto\n";
+    } else {
+	$reply = 'Reply-To: ';
+    }
+
+    $address =~ s/&/&amp;/g;
+    $address =~ s/</&lt;/g;
+    $address =~ s/>/&gt;/g;
+    $address =~ s/\"/&quot;/g;
+    $reply =~ s/&/&amp;/g;
+    $reply =~ s/</&lt;/g;
+    $reply =~ s/>/&gt;/g;
+    $reply =~ s/\"/&quot;/g;
+    $signature =~ s/&/&amp;/g;
+    $signature =~ s/</&lt;/g;
+    $signature =~ s/>/&gt;/g;
+    $signature =~ s/\"/&quot;/g;
+
+    @form = ();
+    push(@form,
+	 "<HTML><HEAD><TITLE>Mailing to $address</TITLE></HEAD>\n",
+	 "<BODY><H5>$banner</H5>\n",
+	 "<P>Have a look at the recipient address first, especially if\n",
+	 "it contains funny characters like `%' or `;'.\n",
+	 "<FORM METHOD=POST ACTION=\"mailto:Done\">\n",
+				# the 'Done' is there only because sth
+				# intelligible should be displayed in the
+				# URL field of the Happy Page :^)
+	 "<TEXTAREA NAME=\"HEAD\" ROWS=4 COLS=78>",
+	 "To: $address\nCc: \nSubject: \n$reply\n</TEXTAREA>\n",
+	 "<TEXTAREA NAME=\"BODY\" ROWS=15 COLS=78>",
+	 "</TEXTAREA>\n<HR>\n");
+    if ($signature ne '') {
+	push(@form,
+	     "<TEXTAREA NAME=SIG ROWS=4 COLS=78>",
+	     "$signature</TEXTAREA>\n<P>",
+	     "<INPUT TYPE=checkbox NAME=\"SIGN\" CHECKED>",
+	     ' Append Signature ');
+    } else {
+	push(@form, '<P>');
+    }
+    push(@form,
+	 "<INPUT TYPE=submit VALUE=\"Mail\">",
+	 "<INPUT TYPE=reset VALUE=\"Reset\"><HR></FORM>\n",
+	 "<P>After mailing, you will be shown the message as passed to\n",
+	 "<CODE>sendmail</CODE>; you could then save it to a file if you\n",
+	 "wish. (It won't have From or Date headers yet.)\n",
+	 "Alternatively, you can Cc yourself before mailing it.\n",
+	 "</BODY></HTML>\n");
+    $form = join('', @form);
+
+    $form_length = length ($form);
+
+    print "HTTP/1.0 200 OK\n";
+    print "Content-type: text/html\n";
+    print "Content-length: $form_length\n\n";
+    print $form;
+    exit 0;			# doesn't return
+}
+
+
+sub
+PostCall {
+				# handle a filled-in FORM, which we get URL-
+				# encoded from chimera, and pass it to the
+				# mail transfer agent
+				# Undo the URL encoding first
+    $head =~ s/\+/ /g;
+    $head =~ s/%([0-9A-Fa-f]{2})/sprintf("%c",hex($1))/ge;
+
+    $head =~ s/\s+$/\n/;	# and make sure $head ends with an empty line
+    $head .= "X-Mailer: Chimera-1.70 via mailto.pl\n\n";
+	
+    $body =~ s/\+/ /g;	
+    $body =~ s/%([0-9A-Fa-f]{2})/sprintf("%c",hex($1))/ge;
+
+    $body =~ s/\s+$/\n/;	# and the body should end with one newline
+
+    if ( $sign eq 'on' ) {	
+	$sig =~ s/\+/ /g;
+	$sig =~ s/%([0-9A-Fa-f]{2})/sprintf("%c",hex($1))/ge;
+	$sig =~ s/\s+$/\n/;	# and same goes for the .signature
+    }
+
+    open(TMP, ">$HOME/.letter$$");
+    @letter = ($head, $body);
+    push(@letter, "\n-- \n$sig") if ($sign eq 'on');
+    $letter = join('', @letter);
+    $letter_length = length ($letter);
+
+    print TMP $letter;
+    close(TMP);
+				# here the shell never sees the address.
+    $results = `$mailer $HOME/.letter$$ 2>&1`;
+    
+    if ($?) {
+	@message = ("System Mailer error:\n$results\n",
+		    "Message text follows:\n$letter");
+	$message = join('', @message);
+
+    } else {
+	$message = $letter;
+    }
+    $message_length = length ($message);
+
+    print "HTTP/1.0 200 OK\n";
+    print "Content-type: text/plain\n";
+    print "Content-length: $message_length\n\n";
+    print $message;
+
+    unlink "$HOME/.letter$$";
+    exit 0;
+}
